@@ -1,20 +1,69 @@
-import { getMetadata } from '../../scripts/aem.js';
-import { loadFragment } from '../fragment/fragment.js';
+/**
+ * Fetch the footer fragment. Metadata-independent dual-fetch:
+ * /content first (localhost / aem up), then root (DA/EDS production).
+ */
+async function fetchFooterHtml() {
+  let resp = await fetch('/content/footer.plain.html');
+  if (!resp.ok) resp = await fetch('/footer.plain.html');
+  if (!resp.ok) return null;
+  return resp.text();
+}
 
 /**
- * loads and decorates the footer
- * @param {Element} block The footer block element
+ * Build the newsletter signup form from the lead-capture section's copy.
+ * The section holds two paragraphs (heading + subcopy); the input and button
+ * are created here because form controls cannot live in the plain fragment.
+ * @param {Element} section the lead-capture section element
+ */
+function buildNewsletter(section) {
+  const form = document.createElement('form');
+  form.className = 'footer-newsletter-form';
+  form.setAttribute('novalidate', '');
+
+  const input = document.createElement('input');
+  input.type = 'email';
+  input.name = 'email';
+  input.placeholder = 'Email';
+  input.setAttribute('aria-label', 'Email');
+
+  const button = document.createElement('button');
+  button.type = 'submit';
+  button.textContent = 'Subscribe';
+
+  form.append(input, button);
+  form.addEventListener('submit', (e) => e.preventDefault());
+  section.append(form);
+}
+
+/**
+ * Decorate the footer: fetch the fragment, tag sections, and build the
+ * newsletter form. All copy/links/images come from the fragment DOM.
+ * @param {Element} block the footer block element
  */
 export default async function decorate(block) {
-  // load footer as fragment
-  const footerMeta = getMetadata('footer');
-  const footerPath = footerMeta ? new URL(footerMeta, window.location).pathname : '/footer';
-  const fragment = await loadFragment(footerPath);
-
-  // decorate footer DOM
+  const html = await fetchFooterHtml();
   block.textContent = '';
+  if (!html) return;
+
   const footer = document.createElement('div');
-  while (fragment.firstElementChild) footer.append(fragment.firstElementChild);
+  footer.innerHTML = html;
+
+  // Section order in footer.plain.html: brand/social, link columns,
+  // newsletter, copyright.
+  const classes = ['brand', 'links', 'newsletter', 'legal'];
+  classes.forEach((c, i) => {
+    const section = footer.children[i];
+    if (section) section.classList.add(`footer-${c}`);
+  });
+
+  const brand = footer.querySelector('.footer-brand');
+  if (brand) {
+    const socialList = brand.querySelector('ul');
+    if (socialList) socialList.classList.add('footer-social');
+  }
+
+  const newsletter = footer.querySelector('.footer-newsletter');
+  if (newsletter) buildNewsletter(newsletter);
 
   block.append(footer);
 }

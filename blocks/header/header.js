@@ -159,6 +159,11 @@ export default async function decorate(block) {
     const topList = navSections.querySelector(':scope > ul');
     if (topList) topList.setAttribute('role', 'menu');
     navSections.querySelectorAll(':scope > ul > li').forEach((li) => {
+      // The source wraps each section label in a <p> (<li><p><a>…</a></p>).
+      // Unwrap it so the CSS that targets `li > a` applies: the fixed-height
+      // anchor, the orange hover/active underline, and the mobile chevron.
+      const labelLink = li.querySelector(':scope > p > a');
+      if (labelLink) labelLink.parentElement.replaceWith(labelLink);
       li.setAttribute('role', 'menuitem');
       const panel = li.querySelector(':scope > ul');
       if (panel) {
@@ -188,10 +193,14 @@ export default async function decorate(block) {
     }
   });
 
-  // Handle viewport changes: reset mobile menu + open sections when crossing
-  // the breakpoint so the layout adapts without a refresh.
+  // Handle viewport changes: reset the nav to its closed/default state when
+  // crossing the breakpoint so neither layout inherits the other's open state.
+  // (Forcing aria-expanded='true' here would apply the mobile drawer grid on
+  // desktop, since [aria-expanded='true'] outranks the desktop grid rule.)
   isDesktop.addEventListener('change', () => {
-    toggleMenu(nav, navSections, isDesktop.matches);
+    nav.setAttribute('aria-expanded', 'false');
+    const button = nav.querySelector('.nav-hamburger button');
+    if (button) button.setAttribute('aria-label', 'Open navigation');
     if (navSections) closeAllSections(navSections);
     document.body.style.overflowY = '';
   });

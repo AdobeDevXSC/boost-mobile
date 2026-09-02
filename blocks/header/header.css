@@ -289,14 +289,17 @@ header nav .nav-tools > ul {
 }
 
 header nav .nav-tools img {
-  width: 24px;
-  height: 24px;
+  width: 40px;
+  height: 40px;
 }
 
 header nav .nav-tools a {
   font-size: 14px;
   font-weight: 700;
   color: var(--nav-tools-text);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* hide phone number on mobile top bar (keep cart + sign in) */
@@ -369,7 +372,7 @@ header nav .nav-locale-list li a {
       'brand sections tools' auto / auto 1fr auto;
     align-items: center;
     column-gap: 0;
-    max-width: 1440px;
+    max-width: 1880px;
     padding: 0 32px;
   }
 
@@ -386,7 +389,7 @@ header nav .nav-locale-list li a {
     gap: 24px;
     width: 100vw;
     margin-left: calc(50% - 50vw);
-    padding: 6px max(32px, calc(50vw - 688px));
+    padding: 5px 20px;
     background: var(--nav-util-bg);
     box-sizing: border-box;
   }
@@ -431,10 +434,18 @@ header nav .nav-locale-list li a {
   header nav .nav-sections > ul {
     display: flex;
     align-items: center;
-    gap: 13px;
+    gap: 3.5rem;
+  }
+
+  @media (900px <= width <= 1200px) {
+    header nav .nav-sections > ul {
+      gap: 1rem;
+    }
   }
 
   header nav .nav-sections > ul > li {
+    padding: 0;
+    border-bottom: 0;
     cursor: pointer;
   }
 
@@ -473,6 +484,7 @@ header nav .nav-locale-list li a {
     left: 50%;
     top: 100%;
     width: 100vw;
+    margin-top: 0;
     transform: translateX(-50%);
     padding: 32px max(32px, calc(50vw - 688px));
     background: #fff;

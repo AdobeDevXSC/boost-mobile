@@ -10,12 +10,14 @@
   --footer-heading-font: "Druk Bold", "Helvetica Neue", helvetica, sans-serif;
   --footer-text: rgb(23 23 37);
   --footer-link: rgb(82 82 97);
+  --footer-bg: rgb(245 245 246);
   --footer-newsletter-bg: rgb(245 245 246);
+  --footer-btn: rgb(151 151 158);
   --footer-copyright: rgb(41 41 56);
 }
 
 footer {
-  background-color: #fff;
+  background-color: var(--footer-bg);
   font-family: var(--footer-font);
 }
 
@@ -30,7 +32,7 @@ footer .footer ul {
 }
 
 footer .footer a:any-link {
-  color: inherit;
+  color: rgb(82, 82, 97);
   text-decoration: none;
 }
 
@@ -58,12 +60,12 @@ footer .footer-brand p:nth-of-type(2) {
 footer .footer-social {
   display: flex;
   justify-content: center;
-  gap: 16px;
+  gap: 20px;
 }
 
 footer .footer-social img {
-  width: 28px;
-  height: 28px;
+  width: 40px;
+  height: 40px;
 }
 
 /* ---- link columns (mobile: stacked) ---- */
@@ -84,10 +86,11 @@ footer .footer-links h4 {
   font-weight: 800;
   letter-spacing: -0.2px;
   color: var(--footer-text);
+  font-style: italic;
 }
 
 footer .footer-links > ul > li > ul > li {
-  padding: 6px 0;
+  padding: 0;
 }
 
 footer .footer-links > ul > li > ul > li > a {
@@ -124,39 +127,47 @@ footer .footer-newsletter p:nth-child(2) {
 
 footer .footer-newsletter-form {
   display: flex;
+  flex-direction: column;
+  gap: 16px;
   max-width: 480px;
   margin: 0 auto;
-  border: 1px solid rgb(200 200 205);
-  border-radius: 7px;
-  background: #fff;
-  overflow: hidden;
 }
 
 footer .footer-newsletter-form input {
-  flex: 1 1 auto;
-  min-width: 0;
-  border: 0;
-  padding: 12px 16px;
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid rgb(200 200 205);
+  border-radius: 8px;
+  padding: 18px 16px;
   font-family: var(--footer-font);
   font-size: 18px;
-  background: transparent;
+  font-weight: 700;
+  text-align: center;
+  background: #fff;
+}
+
+footer .footer-newsletter-form input::placeholder {
+  color: var(--footer-text);
+  opacity: 1;
 }
 
 footer .footer-newsletter-form input:focus {
   outline: none;
+  border-color: var(--footer-text);
 }
 
 footer .footer-newsletter-form button {
-  flex: 0 0 auto;
-  margin: 0;
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
   border: 0;
-  padding: 12px 16px;
-  background: var(--footer-text);
+  padding: 16px;
+  background: var(--footer-btn);
   color: #fff;
   font-family: var(--footer-font);
   font-size: 18px;
   font-weight: 800;
-  border-radius: 7px;
+  border-radius: 8px;
   cursor: pointer;
 }
 
@@ -178,14 +189,33 @@ footer .footer-legal p {
    ========================================================= */
 @media (width >= 900px) {
   footer .footer-brand {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      'logo social-text'
+      'logo social-icons';
+    align-items: center;
+    row-gap: 12px;
     max-width: 1208px;
     margin: 0 auto;
     padding: 40px 16px 0;
     text-align: left;
   }
 
+  footer .footer-brand p:first-child {
+    grid-area: logo;
+    margin: 0;
+  }
+
+  footer .footer-brand p:nth-of-type(2) {
+    grid-area: social-text;
+    margin: 0;
+    text-align: right;
+  }
+
   footer .footer-social {
-    justify-content: flex-start;
+    grid-area: social-icons;
+    justify-content: flex-end;
   }
 
   footer .footer-links {
@@ -201,11 +231,37 @@ footer .footer-legal p {
   }
 
   footer .footer-newsletter {
-    padding: 32px max(16px, calc(50vw - 604px));
-    text-align: left;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      'head form'
+      'text form';
+    align-items: start;
+    column-gap: 64px;
+    max-width: 1208px;
+    margin: 32px auto 0;
+    padding: 48px 16px;
+    text-align: center;
+  }
+
+  footer .footer-newsletter p:first-child {
+    grid-area: head;
+    margin: 0 0 12px;
+    font-size: 48px;
+    line-height: 1.05;
+    font-weight: 700;
+  }
+
+  footer .footer-newsletter p:nth-child(2) {
+    grid-area: text;
+    margin: 0;
+    font-size: 18px;
   }
 
   footer .footer-newsletter-form {
+    grid-area: form;
+    align-self: center;
+    max-width: none;
     margin: 0;
   }
 

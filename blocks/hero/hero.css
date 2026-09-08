@@ -1,37 +1,239 @@
-.hero-container .hero-wrapper {
-  max-width: unset;
+/*
+ * Hero block — a single panel with an optional background layer, a content
+ * column and an optional inner image. See hero.js for the authoring model.
+ */
+
+:root {
+  --hero-accent-color: #fc5400;
+  --hero-price-color: #ffe500;
+}
+
+/* full-bleed: heroes ignore the section's centered max-width */
+main > .section > .hero-wrapper {
+  max-width: none;
   padding: 0;
+  margin: 0;
 }
 
 .hero {
   position: relative;
-  padding: 40px 24px;
-  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
-.hero h1 {
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-  color: var(--background-color);
-}
-
-.hero picture {
-  position: absolute;
-  z-index: -1;
-  inset: 0;
-  object-fit: cover;
+.hero > div {
+  position: relative;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  width: 100%;
+  min-height: 340px;
+  padding: 56px 24px;
   box-sizing: border-box;
 }
 
-.hero img {
-  object-fit: cover;
+/* Cell 1 — background image layer */
+.hero-background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hero-background,
+.hero-background picture {
+  display: block;
   width: 100%;
   height: 100%;
 }
 
-@media (width >= 900px) {
+.hero-background img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* content + inner image sit above the background */
+.hero-content,
+.hero-image {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-content {
+  max-width: 680px;
+  text-align: center;
+}
+
+/* display typography */
+.hero-content :is(h1, h2, h3, h4, h5, h6) {
+  margin: 0 0 0.12em;
+  font-family: var(--display-font-family);
+  line-height: 1.02;
+}
+
+.hero-content p {
+  margin: 1em 0;
+  font-size: 14px;
+}
+
+/* the strikethrough (old) price keeps the accent color, slightly muted */
+.hero-content del {
+  opacity: 0.7;
+}
+
+/* trailing fine print */
+.hero-content > p:last-child {
+  margin-top: 1em;
+  font-size: 0.8rem;
+  line-height: 1.3;
+}
+
+.hero-content > :first-child {
+  margin-top: 0;
+}
+
+/* Cell 3 — inner image */
+.hero-image {
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+}
+
+.hero-image img {
+  width: 100%;
+  height: auto;
+}
+
+.hero-image-mobile {
+  display: none;
+}
+
+/* text treatment */
+.hero h1,
+.hero h2,
+.hero h3,
+.hero h4,
+.hero h5,
+.hero h6 {
+  color: var(--hero-accent-color);
+}
+
+.hero.white-text,
+.hero.white-text h1,
+.hero.white-text h2,
+.hero.white-text h3,
+.hero.white-text h4,
+.hero.white-text h5,
+.hero.white-text h6 {
+  color: #fff;
+}
+
+/*
+ * Price accent: in white-text panels, a non-italicized heading (e.g. "$10/MO")
+ * renders in the yellow price color, while italicized display headings
+ * ("UNLIMITED WIRELESS") stay white.
+ */
+.hero.white-text :is(h1, h2, h3, h4, h5, h6):not(:has(em)) {
+  color: var(--hero-price-color);
+}
+
+/* CTAs */
+.hero-cta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  margin: 0.6em 0;
+}
+
+/* CTAs are wrapped in <strong>/<em>, so those wrappers are the flex items */
+.hero-cta > em,
+.hero-cta > strong,
+.hero-cta > a.button {
+  flex: 0 0 200px;
+  max-width: 100%;
+}
+
+.hero-cta a.button {
+  display: block;
+  width: 100%;
+}
+
+
+/* tablet & mobile (<= 1024px): swap the art-directed inner image */
+@media (width <= 1024px) {
+  .has-mobile-image .hero-image-desktop {
+    display: none;
+  }
+
+  .has-mobile-image .hero-image-mobile {
+    display: inline-block;
+  }
+
+  /* constrain the stacked inner image by height so tall images don't blow up */
+  .hero.has-image .hero-image img {
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    max-height: 280px;
+    margin: 0 auto;
+  }
+}
+
+/* desktop (> 1024px): panels with an inner image split 50/50, image left */
+@media (width > 1024px) {
   .hero {
-    padding: 40px 32px;
+    max-height: 450px;
+  }
+
+  .hero > div {
+    min-height: 450px;
+    max-height: 450px;
+    padding: 40px;
+  }
+
+  .hero.has-image > div {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 48px;
+    padding: 40px 64px 0;
+  }
+
+  .hero.has-image .hero-content {
+    flex: 1 1 0;
+    max-width: none;
+    text-align: left;
+  }
+
+  .hero.has-image .hero-cta {
+    justify-content: flex-start;
+  }
+
+  .hero.has-image .hero-image {
+    flex: 1 1 0;
+    order: -1;
+    max-width: none;
+    align-self: stretch;
+    display: flex;
+    /* single image sits at the bottom of the panel */
+    align-items: self-end;
+    justify-content: center;
+  }
+
+  /* an art-directed pair (desktop + mobile) is vertically centered instead */
+  .hero.has-image .hero-image.has-mobile-image {
+    align-items: center;
+  }
+
+  /* scale the inner image to fit the panel height instead of the column width */
+  .hero.has-image .hero-image img {
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    max-height: 340px;
   }
 }

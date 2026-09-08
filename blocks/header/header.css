@@ -321,8 +321,8 @@ header nav .nav-locale-trigger {
   padding: 0;
   background: none;
   font-family: var(--nav-font);
-  font-size: 18px;
-  font-weight: 500;
+  font-size: 12px;
+  font-weight: 700;
   color: #000;
   cursor: pointer;
 }

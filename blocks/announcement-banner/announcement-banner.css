@@ -1,0 +1,58 @@
+/*
+ * Announcement banner — full-bleed promo bar.
+ */
+
+/* full-bleed: ignore the section's centered max-width and margins */
+main > .section.announcement-banner-container {
+  margin: 0;
+}
+
+main > .section > .announcement-banner-wrapper {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+.announcement-banner {
+  background-color: #fc5400;
+}
+
+.announcement-banner p {
+  margin: 0;
+}
+
+/*
+ * The whole bar is the click target. Selectors also target `a.button` so the
+ * banner renders correctly even though the core decorator styles a lone link
+ * as a button.
+ */
+.announcement-banner a,
+.announcement-banner a.button {
+  display: block;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  padding: 18px 24px;
+  background: none;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.4;
+  text-align: center;
+  text-decoration: none;
+  white-space: normal;
+  max-width: none;
+}
+
+.announcement-banner a:hover,
+.announcement-banner a:focus,
+.announcement-banner a.button:hover,
+.announcement-banner a.button:focus {
+  background: none;
+  color: #fff;
+  text-decoration: none;
+}
+
+.announcement-banner sup {
+  font-weight: 400;
+}

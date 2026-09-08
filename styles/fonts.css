@@ -34,6 +34,15 @@
   src: url('../fonts/druk-bold.woff2') format('woff2');
 }
 
+/* Display headings, italic — Druk Text Super Italic */
+@font-face {
+  font-family: "Druk Text";
+  font-style: italic;
+  font-weight: 800;
+  font-display: swap;
+  src: url('../fonts/druk-text-superitalic.woff2') format('woff2');
+}
+
 /* Footer column headings — Druk Bold */
 @font-face {
   font-family: "Druk Bold";

@@ -5,6 +5,7 @@
 /* full-bleed: ignore the section's centered max-width and margins */
 main > .section.announcement-banner-container {
   margin: 0;
+  margin-bottom: 4px;
 }
 
 main > .section > .announcement-banner-wrapper {

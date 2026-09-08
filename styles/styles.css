@@ -278,6 +278,23 @@ main > .section.split-hero {
   height: 100%;
 }
 
+main > .section.text-center {
+  text-align: center;
+}
+
+main > .section.combine-images > .default-content-wrapper p {
+  margin: 0;
+  line-height: 0;
+}
+
+/* images are inline by default and sit on the text baseline, which leaves a
+   few pixels of gap beneath each one; block layout removes it so they stack flush */
+main > .section.combine-images > .default-content-wrapper picture,
+main > .section.combine-images > .default-content-wrapper img {
+  display: block;
+  width: 100%;
+}
+
 @media (width > 1024px) {
   main > .section.split-hero {
     display: grid;

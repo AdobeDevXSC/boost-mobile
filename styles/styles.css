@@ -303,3 +303,8 @@ main > .section.combine-images > .default-content-wrapper img {
     align-items: stretch;
   }
 }
+
+/* header and footer should be hidden in block library pages */
+body.library header, body.library footer {
+  display: none;
+}

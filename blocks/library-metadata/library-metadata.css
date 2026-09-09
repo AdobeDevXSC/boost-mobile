@@ -1,5 +1,5 @@
 .library-metadata-container > div:not(.library-metadata-wrapper) {
-    border: lightgrey 1px solid;
+    /*border: lightgrey 1px solid;*/
 }
 
 .library-metadata-container .library-metadata-wrapper {

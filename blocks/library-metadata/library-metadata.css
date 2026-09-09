@@ -1,3 +1,18 @@
+.library-metadata-container > div:first-of-type {
+    border: lightgrey 1px solid;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-top: 20px;
+}
+
 .library-metadata-wrapper {
-    display: none
+    background-color: lightgrey;
+    border: lightgrey 1px solid;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+.library-metadata-wrapper .library-metadata {
+    display: flex;
+    column-gap: 20px;
 }

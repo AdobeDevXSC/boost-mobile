@@ -231,23 +231,11 @@ loadPage();
   if (exp) import('https://da.live/nx/public/plugins/exp/exp.js');
 }());
 
-const isInModalPreviewFrame = () => {
-  try {
-    // 1. Check if the window is inside a frame
-    if (window.self !== window.top) {
-      // 2. Check if the frame element has the specific class
-      return window.frameElement && window.frameElement.classList.contains('modal-preview-frame');
-    }
-  } catch (e) {
-    // Security error occurs if the parent is on a different domain (Cross-Origin)
-    console.warn("Cross-origin restriction blocked reading parent frame classes.");
-  }
-  return false;
+const isBlockLibraryPage = () => {
+  return (document.querySelector('div.library-metadata'));
 };
 
 // Usage
-if (isInModalPreviewFrame()) {
-  console.log("Yes, running inside the modal preview frame!");
-} else {
-  console.log("No, not in the target frame.");
+if (isBlockLibraryPage()) {
+  document.body.classList.add('library');
 }

@@ -240,6 +240,13 @@ main > .section > .hero-wrapper {
     align-items: center;
   }
 
+  /* a standalone hero (not combined via split-hero) pins its art-directed
+     image to the end of the row */
+  main > .section:not(.split-hero) .hero.has-image .hero-image.has-mobile-image {
+    align-items: center;
+    justify-content: flex-end;
+  }
+
   /* scale the inner image to fit the panel height instead of the column width */
   .hero.has-image .hero-image img {
     width: auto;

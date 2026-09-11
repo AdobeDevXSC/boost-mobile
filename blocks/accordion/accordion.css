@@ -1,33 +1,51 @@
-.accordion details {
-  border: 1px solid #dadada;
+/*
+ * Accordion Block
+ * Recreate an accordion
+ * https://www.hlx.live/developer/block-collection/accordion
+ */
+
+.accordion {
+  --accordion-divider-color: #fc5400;
+  --accordion-summary-bg: #f4f4f4;
+  --accordion-summary-hover-bg: #ededed;
+  --accordion-summary-open-bg: #e6e6e6;
+  --accordion-body-bg: #f0f0f0;
+  --accordion-marker-color: #333;
 }
 
-/* stylelint-disable-next-line no-descending-specificity */
-.accordion details + details {
-  margin-top: 24px;
+.accordion details {
+  border-bottom: 2px solid var(--accordion-divider-color);
 }
 
 .accordion details p {
-  margin-bottom: 0.8em;
+  margin: 0;
 }
 
 .accordion details summary {
   position: relative;
-  padding: 0 16px;
-  padding-right: 46px;
+  padding: 18px 56px 18px 15px;
+  background-color: var(--accordion-summary-bg);
+  color: var(--text-color);
+  font-family: var(--heading-font-family);
+  font-size: var(--heading-font-size-xs);
+  font-weight: 800;
+  line-height: 1.25;
   cursor: pointer;
   list-style: none;
-  overflow: auto;
   transition: background-color 0.2s;
 }
 
 .accordion details[open] summary {
-  background-color: var(--light-color);
+  background-color: var(--accordion-summary-open-bg);
 }
 
-.accordion details summary:focus,
+.accordion details summary:focus-visible,
 .accordion details summary:hover {
-  background-color: var(--light-color);
+  background-color: var(--accordion-summary-hover-bg);
+}
+
+.accordion details[open] summary:hover {
+  background-color: var(--accordion-summary-open-bg);
 }
 
 .accordion details summary::-webkit-details-marker {
@@ -38,24 +56,30 @@
   content: '';
   position: absolute;
   top: 50%;
-  right: 18px;
-  transform: translateY(-50%) rotate(135deg);
-  width: 6px;
-  height: 6px;
-  border: 2px solid;
-  border-width: 2px 2px 0 0;
+  right: 28px;
+  width: 12px;
+  height: 12px;
+  border: solid var(--accordion-marker-color);
+  border-width: 0 2.5px 2.5px 0;
+  transform: translateY(-70%) rotate(45deg);
   transition: transform 0.2s;
 }
 
 .accordion details[open] summary::after {
-  transform: translateY(-50%) rotate(-45deg);
+  transform: translateY(-30%) rotate(225deg);
 }
 
 .accordion details .accordion-item-body {
-  padding: 0 16px;
+  padding: 8px 32px 24px;
+  background-color: var(--accordion-body-bg);
+  font-weight: 500;
 }
 
-.accordion details[open] .accordion-item-body {
-  border-top: 1px solid #dadada;
-  background-color: var(--background-color);
+.accordion details .accordion-item-body a {
+  color: var(--link-color);
+  font-weight: 700;
+}
+
+.accordion details .accordion-item-body a:hover {
+  color: var(--link-hover-color);
 }

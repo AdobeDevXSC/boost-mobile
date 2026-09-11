@@ -176,11 +176,22 @@ main > .section > .hero-wrapper {
 
   /* constrain the stacked inner image by height so tall images don't blow up */
   .hero.has-image .hero-image img {
+    display: block;
     width: auto;
     max-width: 100%;
     height: auto;
     max-height: 280px;
     margin: 0 auto;
+  }
+
+  /* connect the inner image (e.g. the phone) to the bottom edge of the panel:
+     drop the panel's bottom padding and push the image down so it sits flush. */
+  .hero.has-image > div {
+    padding-bottom: 0;
+  }
+
+  .hero.has-image .hero-image {
+    margin-top: auto;
   }
 }
 

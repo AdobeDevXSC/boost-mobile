@@ -424,7 +424,9 @@ header nav .nav-locale-list li a {
   header nav .nav-sections {
     grid-area: sections;
     display: block;
-    margin-left: 40px;
+    /* fluid so the nav fits the whole desktop range (incl. iPad widths) without
+       squishing; opens up to 40px on wide screens. */
+    margin-left: clamp(12px, 1.8vw, 40px);
   }
 
   header nav[aria-expanded='true'] .nav-sections {
@@ -434,13 +436,8 @@ header nav .nav-locale-list li a {
   header nav .nav-sections > ul {
     display: flex;
     align-items: center;
-    gap: 3.5rem;
-  }
-
-  @media (900px <= width <= 1200px) {
-    header nav .nav-sections > ul {
-      gap: 1rem;
-    }
+    /* fluid section spacing: tight at ~900px, roomy 3.5rem on wide desktop */
+    gap: clamp(0.9rem, 2vw, 3.5rem);
   }
 
   header nav .nav-sections > ul > li {
@@ -454,8 +451,9 @@ header nav .nav-locale-list li a {
     display: flex;
     align-items: center;
     height: 74px;
-    padding: 24px 6.4px 20px;
+    padding: 24px clamp(3px, 0.5vw, 6.4px) 20px;
     box-sizing: border-box;
+    white-space: nowrap;
     border-top: 4px solid transparent;
     border-bottom: 4px solid transparent;
     font-size: 14px;
@@ -532,7 +530,7 @@ header nav .nav-locale-list li a {
   }
 
   header nav .nav-tools > ul {
-    gap: 24px;
+    gap: clamp(10px, 1.4vw, 24px);
   }
 
   header nav .nav-tools > ul > li:first-child {
@@ -545,6 +543,7 @@ header nav .nav-locale-list li a {
     justify-content: center;
     height: 48px;
     line-height: 24px;
+    white-space: nowrap;
   }
 
   /* phone number as bordered button */
@@ -552,7 +551,8 @@ header nav .nav-locale-list li a {
     box-sizing: border-box;
     border: 1px solid var(--nav-tools-text);
     border-radius: 4px;
-    padding: 12px 32px;
+    /* fluid horizontal padding so the button gives ground on tablet widths */
+    padding: 12px clamp(14px, 1.8vw, 32px);
     line-height: 14px;
   }
 }

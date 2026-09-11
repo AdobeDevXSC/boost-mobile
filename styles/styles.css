@@ -331,7 +331,7 @@ main > .section.split-hero {
   height: 100%;
 }
 
-main > .section.center-text {
+main > .section.center-text .default-content-wrapper {
   text-align: center;
 }
 

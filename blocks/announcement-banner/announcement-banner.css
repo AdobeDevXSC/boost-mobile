@@ -15,7 +15,7 @@ main > .section > .announcement-banner-wrapper {
 }
 
 .announcement-banner {
-  background-color: #fc5400;
+  background-color: var(--brand-color);
 }
 
 .announcement-banner p {

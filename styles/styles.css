@@ -19,6 +19,9 @@
   --link-color: #3b63fb;
   --link-hover-color: #1d3ecf;
 
+  /* brand */
+  --brand-color: #fc5400;
+
   /* buttons */
   --button-primary-bg: #22242e;
 
@@ -73,7 +76,7 @@ body {
   background-color: var(--background-color);
   color: var(--text-color);
   font-family: var(--body-font-family);
-  font-size: var(--body-font-size-m);
+  font-size: var(--body-font-size-xs);
   font-weight: 500;
   line-height: 1.6;
 }
@@ -108,7 +111,7 @@ h3,
 h4,
 h5,
 h6 {
-  margin-top: 0.8em;
+  margin-top: 0.25em;
   margin-bottom: 0.25em;
   font-family: var(--heading-font-family);
   font-weight: 800;
@@ -222,6 +225,45 @@ button.secondary {
   color: var(--text-color);
 }
 
+/*
+ * default (unmodified) button — a plain authored link with no strong/em
+ * wrapper renders as a brand-colored, underlined text link with a chevron
+ */
+a.button:any-link:not(.primary):not(.secondary) {
+  display: inline;
+  max-width: none;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: none;
+  color: var(--brand-color);
+  text-decoration: underline;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 6px;
+  white-space: normal;
+  text-overflow: clip;
+}
+
+a.button:any-link:not(.primary):not(.secondary):hover,
+a.button:any-link:not(.primary):not(.secondary):focus {
+  background: none;
+  color: var(--brand-color);
+  text-decoration: underline;
+}
+
+/* chevron; inline-block keeps the link's underline from crossing it */
+a.button:any-link:not(.primary):not(.secondary)::after {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-left: 12px;
+  border: solid var(--brand-color);
+  border-width: 3px 3px 0 0;
+  transform: translateY(-2px) rotate(45deg);
+  vertical-align: middle;
+}
+
 main img {
   max-width: 100%;
   width: auto;
@@ -289,8 +331,38 @@ main > .section.split-hero {
   height: 100%;
 }
 
-main > .section.text-center {
+main > .section.center-text {
   text-align: center;
+}
+
+/* center-ctas: a group of CTA buttons, centered — a column on mobile,
+   a wrapping row on desktop */
+main > .section.center-ctas .default-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+main > .section.center-ctas .button-container {
+  margin: 0;
+}
+
+/* space the icon from its label and keep the pair centered in the button */
+main > .section.center-ctas .button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+@media (width >= 900px) {
+  main > .section.center-ctas .default-content-wrapper {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 24px;
+  }
 }
 
 main > .section.combine-images > .default-content-wrapper p {

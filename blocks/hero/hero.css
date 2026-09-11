@@ -4,7 +4,7 @@
  */
 
 :root {
-  --hero-accent-color: #fc5400;
+  --hero-accent-color: var(--brand-color);
   --hero-price-color: #ffe500;
 }
 

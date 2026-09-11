@@ -5,7 +5,7 @@
  */
 
 .accordion {
-  --accordion-divider-color: #fc5400;
+  --accordion-divider-color: var(--brand-color);
   --accordion-summary-bg: #f4f4f4;
   --accordion-summary-hover-bg: #ededed;
   --accordion-summary-open-bg: #e6e6e6;

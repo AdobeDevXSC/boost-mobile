@@ -2,18 +2,26 @@
     /*border: lightgrey 1px solid;*/
 }
 
-.library-metadata-container .library-metadata-wrapper {
-    margin-top: 20px;
-    margin-bottom: 20px;
+.library-metadata-container {
+    position: relative;
 }
 
-.library-metadata-wrapper {
+.library-metadata-container .library-metadata-wrapper {
     background-color: lightgrey;
-    border: lightgrey 1px solid;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #FFFFFF;
     border-radius: 15px;
+    position: absolute;
+    margin-top: 15px;
+    margin-left: 15px;
+    z-index: 10;
 }
 
 .library-metadata-wrapper .library-metadata {
     display: flex;
     column-gap: 20px;
+}
+
+.library-metadata-wrapper .library-metadata p {
+    margin: 0.8em;
 }

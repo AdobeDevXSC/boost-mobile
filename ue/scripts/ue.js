@@ -11,7 +11,38 @@
  */
 
 import { showSlide } from '../../blocks/carousel/carousel.js';
+import { decorateButtons } from '../../scripts/aem.js';
 import { moveInstrumentation } from './ue-utils.js';
+
+/**
+ * The Universal Editor re-renders content from its model as the author edits,
+ * which strips the button classes that `decorateMain` adds at page load — so
+ * primary/secondary buttons and text links briefly appear styled, then lose
+ * their styling. Re-apply `decorateButtons` whenever the editor mutates the DOM.
+ * `decorateButtons` is idempotent (it only sets classes), and this module is
+ * editor-only — it never loads on the published site, so it cannot affect
+ * delivery.
+ */
+const keepButtonDecoration = () => {
+  const main = document.querySelector('main');
+  if (!main) return;
+  let queued = false;
+  const observer = new MutationObserver(() => {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(() => {
+      observer.disconnect();
+      try {
+        decorateButtons(main);
+      } catch (e) {
+        // best-effort: never let re-decoration break the editor
+      }
+      queued = false;
+      observer.observe(main, { childList: true, subtree: true });
+    });
+  });
+  observer.observe(main, { childList: true, subtree: true });
+};
 
 const setupObservers = () => {
   const mutatingBlocks = document.querySelectorAll('div.cards, div.carousel, div.accordion');
@@ -147,4 +178,5 @@ const setupUEEventHandlers = () => {
 export default () => {
   setupObservers();
   setupUEEventHandlers();
+  keepButtonDecoration();
 };

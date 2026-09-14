@@ -172,9 +172,23 @@ a:hover {
   text-decoration: underline;
 }
 
-/* buttons */
+/*
+ * buttons
+ *
+ * The `.ProseMirror` selectors below mirror the class-based rules for the
+ * Universal Editor: inside the editor, CTAs live in contenteditable ProseMirror
+ * regions that revert the button classes added by decorateButtons/hero.js, so
+ * they are styled by their authored structure instead. `.ProseMirror` never
+ * exists on the published site, so these selectors are inert in delivery.
+ * Hero converts any strong>a / em>a; general content needs the wrapper alone in
+ * its paragraph — the selectors match that.
+ */
 a.button:any-link,
-button {
+button,
+.hero .ProseMirror strong > a:only-child,
+.hero .ProseMirror em > a:only-child,
+.ProseMirror p > strong:only-child > a:only-child,
+.ProseMirror p > em:only-child > a:only-child {
   box-sizing: border-box;
   display: inline-block;
   max-width: 100%;
@@ -211,7 +225,9 @@ button:disabled:hover {
 
 /* primary: black fill, white text */
 a.button.primary,
-button.primary {
+button.primary,
+.hero .ProseMirror strong > a:only-child,
+.ProseMirror p > strong:only-child > a:only-child {
   background-color: var(--button-primary-bg);
   border-color: var(--button-primary-bg);
   color: var(--background-color);
@@ -219,7 +235,9 @@ button.primary {
 
 /* secondary: white fill, black text */
 a.button.secondary,
-button.secondary {
+button.secondary,
+.hero .ProseMirror em > a:only-child,
+.ProseMirror p > em:only-child > a:only-child {
   background-color: var(--background-color);
   border-color: var(--background-color);
   color: var(--text-color);
@@ -229,7 +247,8 @@ button.secondary {
  * default (unmodified) button — a plain authored link with no strong/em
  * wrapper renders as a brand-colored, underlined text link with a chevron
  */
-a.button:any-link:not(.primary):not(.secondary) {
+a.button:any-link:not(.primary):not(.secondary),
+.ProseMirror p > a:only-child {
   display: inline;
   max-width: none;
   padding: 0;
@@ -245,14 +264,17 @@ a.button:any-link:not(.primary):not(.secondary) {
 }
 
 a.button:any-link:not(.primary):not(.secondary):hover,
-a.button:any-link:not(.primary):not(.secondary):focus {
+a.button:any-link:not(.primary):not(.secondary):focus,
+.ProseMirror p > a:only-child:hover,
+.ProseMirror p > a:only-child:focus {
   background: none;
   color: var(--brand-color);
   text-decoration: underline;
 }
 
 /* chevron; inline-block keeps the link's underline from crossing it */
-a.button:any-link:not(.primary):not(.secondary)::after {
+a.button:any-link:not(.primary):not(.secondary)::after,
+.ProseMirror p > a:only-child::after {
   content: '';
   display: inline-block;
   width: 8px;

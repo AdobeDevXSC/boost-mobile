@@ -7,16 +7,26 @@
   width: 100%;
 }
 
-.columns > div > div {
-  order: 1;
-}
-
-.columns > div > .columns-img-col {
-  order: 0;
-}
-
+/* stacked columns follow the authored order on mobile (content or image first) */
 .columns > div > .columns-img-col img {
   display: block;
+}
+
+.columns > div > div:not(.columns-img-col) {
+  padding: 40px 0;
+}
+
+/* on mobile, banner content is centered and the stacked columns get a gap */
+@media (width < 900px) {
+  main > .section[data-background] .columns > div,
+  main > .section.has-background .columns > div {
+    gap: 32px;
+  }
+
+  main > .section[data-background] .columns > div > div:not(.columns-img-col),
+  main > .section.has-background .columns > div > div:not(.columns-img-col) {
+    text-align: center;
+  }
 }
 
 @media (width >= 900px) {
@@ -28,6 +38,14 @@
 
   .columns > div > div {
     flex: 1;
-    order: unset;
+  }
+
+  /* banner sections (with a section background): keep the image column's art
+     contained and centered rather than filling the whole column */
+  main > .section[data-background] .columns > div > .columns-img-col img,
+  main > .section.has-background .columns > div > .columns-img-col img {
+    width: auto;
+    max-width: 100%;
+    margin-inline: auto;
   }
 }

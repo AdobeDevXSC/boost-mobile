@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "gradient-text",
+        "value": "*",
+        "files": [
+          "styles/styles.css"
+        ],
+        "createdAt": "2026-09-14T02:09:44.418Z",
+        "reason": "user confirmed: Heading Color metadata is an opt-in authoring capability that must accept gradient values; gradient text only renders when an author deliberately supplies a gradient"
+      }
+    ]
+  }
+}

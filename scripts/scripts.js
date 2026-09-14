@@ -115,7 +115,69 @@ function decorateSections(main) {
           section.dataset[toCamelCase(key)] = meta[key];
         }
       });
+      // A `Background` value authored as an image: reuse its optimized <picture>
+      // as a full-bleed layer rather than a CSS url() (better for LCP).
+      const bgRow = [...sectionMeta.querySelectorAll(':scope > div')]
+        .find((row) => toClassName(row.children[0]?.textContent || '') === 'background');
+      const bgPicture = bgRow?.children[1]?.querySelector('picture');
+      if (bgPicture) {
+        section.classList.add('has-background');
+        bgPicture.classList.add('section-background');
+        section.prepend(bgPicture);
+        // the picture is the background, so don't also apply it as a CSS value
+        delete section.dataset.background;
+      }
       sectionMeta.parentNode.remove();
+    }
+  });
+}
+
+/**
+ * Applies flexible, per-instance styling driven by Section Metadata.
+ * `decorateSections` exposes each metadata row as a `data-*` attribute:
+ *  - `Background` (`data-background`): a CSS color or gradient
+ *    (e.g. `#f4681e`, `linear-gradient(...)`) or an image URL, applied as a
+ *    cover background-image. An image authored as an asset is instead mounted
+ *    as an optimized <picture> layer by `decorateSections`.
+ *  - `Color` (`data-color`): the section's overall text color — any CSS color
+ *    value (the library exposes named presets like dark=#000000, light=#FFFFFF).
+ *  - `Heading Color` (`data-heading-color`): applied to the section's h1–h6.
+ *    Accepts any CSS color (hex, named, rgb/hsl, etc.) via the
+ *    `--heading-color` custom property, or a gradient (`linear-gradient(...)`,
+ *    `radial-gradient(...)`, `conic-gradient(...)`), which is clipped to the
+ *    heading text via `--heading-gradient` and a `data-heading-gradient` flag.
+ * @param {Element} main The container element
+ */
+function decorateSectionStyles(main) {
+  main.querySelectorAll('.section[data-background]').forEach((section) => {
+    const bg = section.dataset.background.trim();
+    if (!bg) return;
+    // A URL or path (including extension-less CDN URLs like Scene7, or a data
+    // URI) is an image; anything else is a CSS color or gradient.
+    const isImageUrl = /^(https?:)?\/\//i.test(bg) || /^(\/|data:)/i.test(bg)
+      || /\.(png|jpe?g|webp|avif|gif|svg)(\?|#|$)/i.test(bg);
+    if (isImageUrl) {
+      section.style.backgroundImage = `url("${bg}")`;
+      section.style.backgroundSize = 'cover';
+      section.style.backgroundPosition = 'center';
+    } else {
+      section.style.background = bg;
+    }
+  });
+
+  main.querySelectorAll('.section[data-color]').forEach((section) => {
+    const color = section.dataset.color.trim();
+    if (color) section.style.color = color;
+  });
+
+  main.querySelectorAll('.section[data-heading-color]').forEach((section) => {
+    const value = section.dataset.headingColor.trim();
+    if (!value) return;
+    if (/-gradient\(/i.test(value)) {
+      section.style.setProperty('--heading-gradient', value);
+      section.dataset.headingGradient = '';
+    } else {
+      section.style.setProperty('--heading-color', value);
     }
   });
 }
@@ -131,6 +193,7 @@ export function decorateMain(main) {
   decorateIcons(main);
   buildAutoBlocks(main);
   decorateSections(main);
+  decorateSectionStyles(main);
   decorateBlocks(main);
 }
 

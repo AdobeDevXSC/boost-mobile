@@ -335,6 +335,44 @@ main > .section.center-text .default-content-wrapper {
   text-align: center;
 }
 
+/* background image: a "Background" metadata value authored as an asset is
+   mounted as a full-bleed <picture> layer behind the section's content */
+main > .section.has-background {
+  position: relative;
+}
+
+main > .section.has-background > div {
+  position: relative;
+  z-index: 1;
+}
+
+main > .section picture.section-background {
+  display: block;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+main > .section picture.section-background img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* heading-color: recolor a section's headings via the "Heading Color" metadata
+   (values set by decorateSectionStyles). Solid colors use --heading-color; a
+   gradient value is clipped to the heading text instead. */
+main > .section[data-heading-color] :is(h1, h2, h3, h4, h5, h6) {
+  color: var(--heading-color);
+}
+
+main > .section[data-heading-color][data-heading-gradient] :is(h1, h2, h3, h4, h5, h6) {
+  background-image: var(--heading-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
 /* center-ctas: a group of CTA buttons, centered — a column on mobile,
    a wrapping row on desktop */
 main > .section.center-ctas .default-content-wrapper {

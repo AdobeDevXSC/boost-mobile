@@ -3,25 +3,42 @@
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(257px, 1fr));
-  grid-gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 32px;
 }
 
 .cards > ul > li {
-  border: 1px solid #dadada;
-  background-color: var(--background-color);
-}
-
-.cards .cards-card-body {
-  margin: 16px;
+  border-radius: 16px;
+  background-color: #f2f2f2;
+  padding: 24px;
+  overflow: hidden;
 }
 
 .cards .cards-card-image {
   line-height: 0;
 }
 
-.cards > ul > li img {
+.cards .cards-card-image img {
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
+  border-radius: 12px;
+}
+
+.cards .cards-card-body {
+  margin: 24px 0 0;
+}
+
+.cards .cards-card-body :is(h1, h2, h3, h4, h5, h6) {
+  margin: 0 0 12px;
+  font-size: var(--heading-font-size-s);
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.cards .cards-card-body p {
+  margin: 0;
+  font-size: var(--body-font-size-m);
+  line-height: 1.5;
+  color: var(--text-color);
 }

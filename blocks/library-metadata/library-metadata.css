@@ -22,6 +22,10 @@
     pointer-events: none;
 }
 
+.library-metadata-container:hover {
+    border: 1px solid grey;
+}
+
 .library-metadata-container:hover .library-metadata-wrapper {
     opacity: 1;
     visibility: visible;

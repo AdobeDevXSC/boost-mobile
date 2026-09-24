@@ -1,12 +1,12 @@
 /*
  * Hero Banner block — a full-bleed promotional panel whose theme is selected at
- * the section level via `hero-banner-style` (preset) and an optional
- * `hero-banner-background` (color/gradient override). See hero-banner.js for the
+ * the section level via `hero-banner-style`. See hero-banner.js for the
  * authoring model.
  *
  * The block holds up to two order-significant cells (content + optional image).
- * Desktop layout follows the authored order; mobile always leads with content.
- * Presets: `orange`, `blue`, `spotlight`.
+ * Split presets (orange/blue) follow the authored order on desktop; spotlight
+ * uses the image as a full-bleed background. Mobile always leads with content.
+ * Desktop heights: orange/blue 400px, spotlight 685px.
  */
 
 :root {
@@ -83,9 +83,9 @@ main > .section > .hero-banner-wrapper {
 
 /* eyebrow — the first paragraph, before any heading */
 .hero-banner-content > p:first-child {
-  margin: 0 0 0.6em;
+  margin: 0 0 0.5em;
   font-weight: 700;
-  font-size: clamp(16px, 2.4vw, 20px);
+  font-size: clamp(14px, 1.2vw, 16px);
   line-height: 1.2;
 }
 
@@ -100,14 +100,14 @@ main > .section > .hero-banner-wrapper {
 
 /* h1/h2 — the large italic display lines */
 .hero-banner-content :is(h1, h2) {
-  font-size: clamp(40px, 7vw, 76px);
+  font-size: clamp(34px, 8vw, 48px);
   font-style: italic;
   letter-spacing: 0.01em;
 }
 
 /* h3 — an upright secondary line (e.g. "Next-level Drama"); keep authored case */
 .hero-banner-content h3 {
-  font-size: clamp(24px, 3.6vw, 40px);
+  font-size: clamp(20px, 2vw, 26px);
   font-style: normal;
   text-transform: none;
 }
@@ -122,8 +122,8 @@ main > .section > .hero-banner-wrapper {
 /* body copy */
 .hero-banner-content p {
   margin: 0.8em 0;
-  font-size: clamp(15px, 1.6vw, 18px);
-  line-height: 1.35;
+  font-size: clamp(14px, 1.2vw, 16px);
+  line-height: 1.4;
 }
 
 /* trailing fine print */
@@ -168,7 +168,7 @@ main > .section > .hero-banner-wrapper {
 
 .hero-banner-cta a.button {
   margin: 0;
-  min-width: 200px;
+  padding: 13px 28px;
 }
 
 /*
@@ -213,11 +213,27 @@ main > .section > .hero-banner-wrapper {
 .hero-banner.spotlight .hero-banner-content {
   order: 0;
   text-align: left;
-  max-width: 560px;
+  max-width: 500px;
 }
 
+/* spotlight heading carries a brand-blue accent underline */
+.hero-banner.spotlight .hero-banner-content h1 {
+  display: inline-block;
+  margin-bottom: 20px;
+  padding-bottom: 14px;
+  border-bottom: 4px solid #58b6e8;
+}
+
+/* spotlight CTAs stack vertically, equal width */
 .hero-banner.spotlight .hero-banner-cta {
-  justify-content: flex-start;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.hero-banner.spotlight .hero-banner-cta a.button {
+  width: 320px;
+  max-width: 100%;
 }
 
 /* the image (whichever column it's authored in) fills the panel as background */
@@ -278,12 +294,20 @@ main > .section > .hero-banner-wrapper {
     padding: 48px 64px;
   }
 
+  /* display headings settle at their fixed desktop size */
+  .hero-banner-content :is(h1, h2) {
+    font-size: 50px;
+  }
+
+  /* orange/blue: a fixed 400px panel, content and image vertically centered */
   .hero-banner.has-image:not(.spotlight) > div {
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    gap: 56px;
-    padding: 40px 64px 0;
+    gap: 48px;
+    height: 400px;
+    min-height: 0;
+    padding: 0 64px;
   }
 
   /* source order governs left/right — clear the mobile content-first override */
@@ -303,7 +327,7 @@ main > .section > .hero-banner-wrapper {
     max-width: none;
     align-self: stretch;
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     justify-content: center;
   }
 
@@ -311,15 +335,13 @@ main > .section > .hero-banner-wrapper {
     width: auto;
     max-width: 100%;
     height: auto;
-    max-height: 380px;
+    max-height: 360px;
   }
 
-  /* an art-directed pair is vertically centered instead of pinned to the base */
-  .hero-banner.has-image:not(.spotlight) .hero-banner-image.has-mobile-image {
-    align-items: center;
-  }
-
+  /* spotlight: a taller 685px full-bleed panel */
   .hero-banner.spotlight > div {
-    min-height: 520px;
+    height: 685px;
+    min-height: 0;
+    padding: 0 64px;
   }
 }

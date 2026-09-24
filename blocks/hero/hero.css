@@ -68,6 +68,35 @@ main > .section > .hero-wrapper {
   text-align: center;
 }
 
+/*
+ * Alignment variants — set the text alignment of the content and (for a hero
+ * with no inner image) anchor the content column to that side of the panel.
+ * `text-align-center` is the default and is provided for explicitness.
+ */
+.hero.text-align-left .hero-content {
+  text-align: left;
+}
+
+.hero.text-align-center .hero-content {
+  text-align: center;
+}
+
+.hero.text-align-right .hero-content {
+  text-align: right;
+}
+
+.hero:not(.has-image).text-align-left > div {
+  align-items: flex-start;
+}
+
+.hero:not(.has-image).text-align-center > div {
+  align-items: center;
+}
+
+.hero:not(.has-image).text-align-right > div {
+  align-items: flex-end;
+}
+
 /* display typography */
 .hero-content :is(h1, h2, h3, h4, h5, h6) {
   margin: 0 0 0.12em;
@@ -141,6 +170,15 @@ main > .section > .hero-wrapper {
   color: var(--hero-price-color);
 }
 
+/*
+ * `white-headings` opts out of the yellow price accent: every heading stays
+ * white. Pair with `white-text` for a hero whose headings carry no price
+ * (e.g. a display billboard like "WE'RE IN. ARE U?").
+ */
+.hero.white-text.white-headings :is(h1, h2, h3, h4, h5, h6) {
+  color: #fff;
+}
+
 /* CTAs */
 .hero-cta {
   display: flex;
@@ -148,6 +186,19 @@ main > .section > .hero-wrapper {
   justify-content: center;
   gap: 16px;
   margin: 0.6em 0;
+}
+
+/* CTAs follow the content alignment */
+.hero.text-align-left .hero-cta {
+  justify-content: flex-start;
+}
+
+.hero.text-align-center .hero-cta {
+  justify-content: center;
+}
+
+.hero.text-align-right .hero-cta {
+  justify-content: flex-end;
 }
 
 /* CTAs are wrapped in <strong>/<em>, so those wrappers are the flex items */
@@ -205,6 +256,16 @@ main > .section > .hero-wrapper {
     min-height: 450px;
     max-height: 450px;
     padding: 40px;
+  }
+
+  /*
+   * `content-half` keeps the content within one half of the panel (desktop
+   * only) so it clears a subject baked into the background image — e.g. the
+   * players on the far side of the "WE'RE IN. ARE U?" banner. Combine with a
+   * `text-align-*` variant to choose the side.
+   */
+  .hero.content-half .hero-content {
+    max-width: 50%;
   }
 
   .hero.has-image > div {

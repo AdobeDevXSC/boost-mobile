@@ -4,27 +4,25 @@
  * A full-bleed promotional banner whose THEME is chosen at the SECTION level via
  * section-metadata keys (not via the block name):
  *
- *   | Section Metadata   |                                   |
- *   | hero-banner-style  | orange                            |  -> preset theme
- *   | Background         | <image / #hex / linear-gradient()> |  -> optional
+ *   | Section Metadata   |        |
+ *   | hero-banner-style  | orange |
  *
  * Presets (hero-banner-style):
- *   `orange`    — orange gradient theme; image sits beside content (split).
- *   `blue`      — navy gradient theme;   image sits beside content (split).
- *   `spotlight` — content-only, left-aligned, overlaid on a full-bleed
- *                 background supplied via the section `Background` metadata.
+ *   `orange`    — baked orange gradient; image sits beside content (split).
+ *   `blue`      — baked navy gradient;   image sits beside content (split).
+ *   `spotlight` — the block's image (in EITHER column) becomes a full-bleed
+ *                 background and the content is overlaid, left-aligned.
  *
- * Backgrounds use the project's native `Background` section-metadata key
- * (handled by scripts.js `decorateSections` / `decorateSectionStyles`): a color
- * or gradient becomes the section background, and an image ASSET is mounted as
- * an optimized full-bleed <picture> layer. `orange` and `blue` also carry a
- * baked gradient default. This block adds no background handling of its own.
+ * The project's native `Background` / `Color` / `Heading Color` section-metadata
+ * keys still apply if an author wants to override the panel background or colors.
  *
  * Authoring model — one row with up to two ORDER-SIGNIFICANT cells, each holding
- * either content or an image:
- *   - The cell containing a <picture> is the image; the other is the content.
- *   - Desktop layout follows the authored order: image in column 1 -> left,
- *     column 2 -> right. A single cell -> full-width content.
+ * either content or an image. The cell containing a <picture> is the image; the
+ * other is the content.
+ *   - Split presets (orange/blue): desktop layout follows the authored order —
+ *     image in column 1 -> left, column 2 -> right. A single cell -> full-width.
+ *   - `spotlight`: the image cell (whichever column) is used as the full-bleed
+ *     background; column order doesn't matter. Content overlays it.
  *   - An image cell may hold a desktop image and an optional mobile image for
  *     art direction.
  *

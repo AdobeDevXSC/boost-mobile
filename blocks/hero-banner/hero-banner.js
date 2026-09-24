@@ -8,10 +8,10 @@
  *   | hero-banner-style  | orange |   ->  section.dataset.heroBannerStyle
  *
  * The value is applied as a class on the block. Supported presets:
- *   `orange`  — orange gradient background; inner image left / content right.
- *   `blue`    — navy radial background;   inner image left / content right.
- *   `players` — content-only, left-aligned; the author supplies a full-bleed
- *               background image via the background-override cell.
+ *   `orange`    — orange gradient background; inner image left / content right.
+ *   `blue`      — navy radial background;   inner image left / content right.
+ *   `spotlight` — content-only, left-aligned; the author supplies a full-bleed
+ *                 background image via the background-override cell.
  *
  * Authored as one row with three cells (same cell order as the hero block):
  *   Cell 1 — Background override (optional): a single image (rendered behind the

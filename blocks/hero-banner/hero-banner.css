@@ -205,21 +205,21 @@ main > .section > .hero-banner-wrapper {
 }
 
 /*
- * `players` preset — content-only, left-aligned, taller panel. The author
+ * `spotlight` preset — content-only, left-aligned, taller panel. The author
  * supplies the full-bleed background image via the background-override cell.
  */
-.hero-banner.players > div {
+.hero-banner.spotlight > div {
   align-items: flex-start;
   text-align: left;
   min-height: 440px;
 }
 
-.hero-banner.players .hero-banner-content {
+.hero-banner.spotlight .hero-banner-content {
   text-align: left;
   max-width: 560px;
 }
 
-.hero-banner.players .hero-banner-cta {
+.hero-banner.spotlight .hero-banner-cta {
   justify-content: flex-start;
 }
 
@@ -299,7 +299,7 @@ main > .section > .hero-banner-wrapper {
     align-items: center;
   }
 
-  .hero-banner.players > div {
+  .hero-banner.spotlight > div {
     min-height: 520px;
   }
 }

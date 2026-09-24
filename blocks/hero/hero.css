@@ -297,6 +297,11 @@ main > .section > .hero-wrapper {
     justify-content: center;
   }
 
+  /* image-right variant: keep the inner image after the content column */
+  .hero.has-image.image-right .hero-image {
+    order: 1;
+  }
+
   /* an art-directed pair (desktop + mobile) is vertically centered instead */
   .hero.has-image .hero-image.has-mobile-image {
     align-items: center;

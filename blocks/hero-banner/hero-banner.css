@@ -216,14 +216,6 @@ main > .section > .hero-banner-wrapper {
   max-width: 500px;
 }
 
-/* spotlight heading carries a brand-blue accent underline */
-.hero-banner.spotlight .hero-banner-content h1 {
-  display: inline-block;
-  margin-bottom: 20px;
-  padding-bottom: 14px;
-  border-bottom: 4px solid #58b6e8;
-}
-
 /* spotlight CTAs stack vertically, equal width */
 .hero-banner.spotlight .hero-banner-cta {
   flex-direction: column;

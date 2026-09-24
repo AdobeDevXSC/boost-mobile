@@ -50,6 +50,14 @@ main > .section > .hero-banner-wrapper {
   background: var(--hero-banner-blue-bg);
 }
 
+/* orange/blue only: constrain the panel content to a centered max width while
+   the gradient background stays full-bleed */
+.hero-banner.orange > div,
+.hero-banner.blue > div {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
 /* the authored row is the flex container for the cells */
 .hero-banner > div {
   position: relative;
@@ -202,6 +210,8 @@ main > .section > .hero-banner-wrapper {
  */
 .hero-banner.spotlight {
   background: #1b1b1b; /* fallback shown only if no image is authored */
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
 .hero-banner.spotlight > div {

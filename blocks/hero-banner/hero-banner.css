@@ -1,0 +1,325 @@
+/*
+ * Hero Banner block — a full-bleed promotional panel whose theme is selected at
+ * the section level via `hero-banner-style` (preset) and an optional
+ * `hero-banner-background` (color/gradient override). See hero-banner.js for the
+ * authoring model.
+ *
+ * The block holds up to two order-significant cells (content + optional image).
+ * Desktop layout follows the authored order; mobile always leads with content.
+ * Presets: `orange`, `blue`, `spotlight`.
+ */
+
+:root {
+  --hero-banner-accent-color: #fffe00;
+  --hero-banner-orange-bg: linear-gradient(
+    90deg,
+    #ffa801 0%,
+    #ee4f00 30%,
+    #ee4f00 65%,
+    #ffa801 100%
+  );
+  --hero-banner-blue-bg: radial-gradient(circle at 50% 50%, #1b386d 0%, #07193d 100%);
+}
+
+/* full-bleed: banners ignore the section's centered max-width and vertical
+   margins so the panel (and any section Background layer) runs edge to edge */
+main > .section:has(.hero-banner) {
+  margin: 0;
+}
+
+main > .section > .hero-banner-wrapper {
+  max-width: none;
+  padding: 0;
+  margin: 0;
+}
+
+.hero-banner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  color: #fff;
+}
+
+/* preset backgrounds (a `hero-banner-background` override wins over these) */
+.hero-banner.orange {
+  background: var(--hero-banner-orange-bg);
+}
+
+.hero-banner.blue {
+  background: var(--hero-banner-blue-bg);
+}
+
+/* the authored row is the flex container for the cells */
+.hero-banner > div {
+  position: relative;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+  min-height: 360px;
+  padding: 48px 24px;
+  box-sizing: border-box;
+}
+
+/* mobile: always lead with content; the image drops below it */
+.hero-banner.has-image .hero-banner-content {
+  order: -1;
+}
+
+.hero-banner-content {
+  position: relative;
+  z-index: 1;
+  max-width: 640px;
+  text-align: center;
+}
+
+.hero-banner-content > :first-child {
+  margin-top: 0;
+}
+
+/* eyebrow — the first paragraph, before any heading */
+.hero-banner-content > p:first-child {
+  margin: 0 0 0.6em;
+  font-weight: 700;
+  font-size: clamp(16px, 2.4vw, 20px);
+  line-height: 1.2;
+}
+
+/* display headings */
+.hero-banner-content :is(h1, h2, h3, h4, h5, h6) {
+  margin: 0 0 0.08em;
+  font-family: var(--display-font-family);
+  line-height: 1;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+/* h1/h2 — the large italic display lines */
+.hero-banner-content :is(h1, h2) {
+  font-size: clamp(40px, 7vw, 76px);
+  font-style: italic;
+  letter-spacing: 0.01em;
+}
+
+/* h3 — an upright secondary line (e.g. "Next-level Drama"); keep authored case */
+.hero-banner-content h3 {
+  font-size: clamp(24px, 3.6vw, 40px);
+  font-style: normal;
+  text-transform: none;
+}
+
+/* accent: wrap words in <em> inside a heading to color them yellow; keep the
+   heading's own slant rather than adding the browser's italic on top */
+.hero-banner-content :is(h1, h2, h3, h4, h5, h6) em {
+  color: var(--hero-banner-accent-color);
+  font-style: inherit;
+}
+
+/* body copy */
+.hero-banner-content p {
+  margin: 0.8em 0;
+  font-size: clamp(15px, 1.6vw, 18px);
+  line-height: 1.35;
+}
+
+/* trailing fine print */
+.hero-banner-content > p:last-child:not(:first-child) {
+  font-size: 0.8rem;
+  line-height: 1.3;
+}
+
+/* image cell */
+.hero-banner-image {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 360px;
+  text-align: center;
+}
+
+.hero-banner-image img {
+  width: 100%;
+  height: auto;
+}
+
+.hero-banner-image-mobile {
+  display: none;
+}
+
+/* CTAs */
+.hero-banner-cta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  margin: 1em 0 0;
+}
+
+.hero-banner-cta > strong,
+.hero-banner-cta > em,
+.hero-banner-cta > a.button {
+  flex: 0 0 auto;
+  max-width: 100%;
+}
+
+.hero-banner-cta a.button {
+  margin: 0;
+  min-width: 200px;
+}
+
+/*
+ * Per-preset CTA colors.
+ * Delivery uses .button.primary / .button.secondary (added by the block JS).
+ * The `.ProseMirror` selectors mirror these for the Universal Editor, where the
+ * editor reverts the JS-added button classes and CTAs are styled by structure.
+ */
+
+/* blue: primary is a light (white) button with dark text */
+.hero-banner.blue .hero-banner-cta a.button.primary,
+.hero-banner.blue .ProseMirror strong > a:only-child {
+  background-color: #fff;
+  border-color: #fff;
+  color: #07193d;
+}
+
+/* orange: secondary is an outline (transparent + white border) button */
+.hero-banner.orange .hero-banner-cta a.button.secondary,
+.hero-banner.orange .ProseMirror em > a:only-child {
+  background-color: transparent;
+  border-color: #fff;
+  color: #fff;
+}
+
+/*
+ * `spotlight` preset — the block's image (in EITHER column) becomes a full-bleed
+ * background and the content is overlaid, left-aligned. Because the image is
+ * positioned absolutely, the authored column order doesn't matter. The image
+ * stays a sideloaded <picture>, so it keeps responsive optimization.
+ */
+.hero-banner.spotlight {
+  background: #1b1b1b; /* fallback shown only if no image is authored */
+}
+
+.hero-banner.spotlight > div {
+  align-items: flex-start;
+  text-align: left;
+  min-height: 440px;
+}
+
+.hero-banner.spotlight .hero-banner-content {
+  order: 0;
+  text-align: left;
+  max-width: 560px;
+}
+
+.hero-banner.spotlight .hero-banner-cta {
+  justify-content: flex-start;
+}
+
+/* the image (whichever column it's authored in) fills the panel as background */
+.hero-banner.spotlight .hero-banner-image {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+}
+
+.hero-banner.spotlight .hero-banner-image picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-banner.spotlight .hero-banner-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* tablet & mobile (<= 1024px): the inner image stacks below the content and
+   sits flush to the bottom edge of the panel (split presets only) */
+@media (width <= 1024px) {
+  .has-mobile-image .hero-banner-image-desktop {
+    display: none;
+  }
+
+  .has-mobile-image .hero-banner-image-mobile {
+    display: inline-block;
+  }
+
+  .hero-banner.has-image:not(.spotlight) .hero-banner-image img {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    max-height: 300px;
+    margin: 0 auto;
+  }
+
+  .hero-banner.has-image:not(.spotlight) > div {
+    padding-bottom: 0;
+  }
+
+  .hero-banner.has-image:not(.spotlight) .hero-banner-image {
+    margin-top: auto;
+  }
+}
+
+/* desktop (> 1024px): content + image sit side by side in AUTHORED order */
+@media (width > 1024px) {
+  .hero-banner > div {
+    min-height: 400px;
+    padding: 48px 64px;
+  }
+
+  .hero-banner.has-image:not(.spotlight) > div {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 56px;
+    padding: 40px 64px 0;
+  }
+
+  /* source order governs left/right — clear the mobile content-first override */
+  .hero-banner.has-image:not(.spotlight) .hero-banner-content {
+    order: 0;
+    flex: 1 1 0;
+    max-width: none;
+    text-align: left;
+  }
+
+  .hero-banner.has-image:not(.spotlight) .hero-banner-cta {
+    justify-content: flex-start;
+  }
+
+  .hero-banner.has-image:not(.spotlight) .hero-banner-image {
+    flex: 1 1 0;
+    max-width: none;
+    align-self: stretch;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  .hero-banner.has-image:not(.spotlight) .hero-banner-image img {
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    max-height: 380px;
+  }
+
+  /* an art-directed pair is vertically centered instead of pinned to the base */
+  .hero-banner.has-image:not(.spotlight) .hero-banner-image.has-mobile-image {
+    align-items: center;
+  }
+
+  .hero-banner.spotlight > div {
+    min-height: 520px;
+  }
+}

@@ -10,19 +10,17 @@
  *            Filled -> panel splits 50/50 (image left, content right) on desktop.
  *
  * Block variants:
- *   `white-text`        — renders all text (including headings) white. By
- *                         default a heading with no <em> takes the yellow price
- *                         accent; add `white-headings` to keep them all white.
- *   `white-headings`    — opt out of the yellow price accent (pair with
- *                         `white-text`).
+ *   `white-text`        — renders all text (including headings) white. A
+ *                         heading with no <em> takes the yellow price accent.
  *   `text-align-left`   — left-align the content; with no inner image the
  *                         content column is anchored to the left of the panel.
  *   `text-align-center` — center the content (this is the default).
  *   `text-align-right`  — right-align the content; with no inner image the
  *                         content column is anchored to the right of the panel.
- *   `content-half`      — constrain the content to half the panel width on
- *                         desktop so it clears a subject baked into the
- *                         background image (e.g. players on the far side).
+ *   `tall`              — taller panel (685px) for a full-bleed statement hero.
+ *   `image-left`        — inner image before the content column on desktop
+ *                         (this is the default; provided for explicitness).
+ *   `image-right`       — inner image after the content column on desktop.
  *
  * Two hero blocks placed in a section with the `Split Hero` style sit side by
  * side (see styles.css).

@@ -97,6 +97,14 @@ main > .section > .hero-wrapper {
   align-items: flex-end;
 }
 
+/*
+ * Height variant — `tall` gives the panel a taller fixed height (685px) for a
+ * full-bleed statement hero. The default height is unchanged.
+ */
+.hero.tall > div {
+  min-height: 685px;
+}
+
 /* display typography */
 .hero-content :is(h1, h2, h3, h4, h5, h6) {
   margin: 0 0 0.12em;
@@ -168,15 +176,6 @@ main > .section > .hero-wrapper {
  */
 .hero.white-text :is(h1, h2, h3, h4, h5, h6):not(:has(em)) {
   color: var(--hero-price-color);
-}
-
-/*
- * `white-headings` opts out of the yellow price accent: every heading stays
- * white. Pair with `white-text` for a hero whose headings carry no price
- * (e.g. a display billboard like "WE'RE IN. ARE U?").
- */
-.hero.white-text.white-headings :is(h1, h2, h3, h4, h5, h6) {
-  color: #fff;
 }
 
 /* CTAs */
@@ -258,14 +257,14 @@ main > .section > .hero-wrapper {
     padding: 40px;
   }
 
-  /*
-   * `content-half` keeps the content within one half of the panel (desktop
-   * only) so it clears a subject baked into the background image — e.g. the
-   * players on the far side of the "WE'RE IN. ARE U?" banner. Combine with a
-   * `text-align-*` variant to choose the side.
-   */
-  .hero.content-half .hero-content {
-    max-width: 50%;
+  /* tall overrides the desktop height cap */
+  .hero.tall {
+    max-height: 685px;
+  }
+
+  .hero.tall > div {
+    min-height: 685px;
+    max-height: 685px;
   }
 
   .hero.has-image > div {
@@ -295,6 +294,12 @@ main > .section > .hero-wrapper {
     /* single image sits at the bottom of the panel */
     align-items: self-end;
     justify-content: center;
+  }
+
+  /* image-left variant: inner image before the content column (the default,
+     provided for explicitness) */
+  .hero.has-image.image-left .hero-image {
+    order: -1;
   }
 
   /* image-right variant: keep the inner image after the content column */

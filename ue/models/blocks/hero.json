@@ -30,6 +30,23 @@
       "id": "hero",
       "fields": [
         {
+          "component": "select",
+          "name": "classes_layout",
+          "label": "Image Position",
+          "valueType": "string",
+          "value": "",
+          "options": [
+            { "name": "Left (default)", "value": "" },
+            { "name": "Right", "value": "image-right" }
+          ]
+        },
+        {
+          "component": "boolean",
+          "name": "classes_white-text",
+          "label": "White Text",
+          "valueType": "boolean"
+        },
+        {
           "component": "reference",
           "valueType": "string",
           "name": "image",

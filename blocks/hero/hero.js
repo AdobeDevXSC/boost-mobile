@@ -9,7 +9,11 @@
  *            Empty  -> content is centered.
  *            Filled -> panel splits 50/50 (image left, content right) on desktop.
  *
- * The `white-text` block variant renders all text (including headings) white.
+ * Block variants:
+ *   `white-text`  — renders all text (including headings) white.
+ *   `image-right` — places the inner image (cell 3) on the right of the
+ *                   content instead of the default left, on desktop.
+ *
  * Two hero blocks placed in a section with the `Split Hero` style sit side by
  * side (see styles.css).
  */

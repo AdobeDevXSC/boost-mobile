@@ -230,9 +230,15 @@ main > .section > .hero-wrapper {
     max-width: none;
     align-self: stretch;
     display: flex;
+
     /* single image sits at the bottom of the panel */
     align-items: self-end;
     justify-content: center;
+  }
+
+  /* image-right variant: keep the inner image after the content column */
+  .hero.has-image.image-right .hero-image {
+    order: 1;
   }
 
   /* an art-directed pair (desktop + mobile) is vertically centered instead */

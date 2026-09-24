@@ -1,9 +1,12 @@
 /*
- * Hero Banner block — a full-bleed promotional panel whose theme (background +
- * layout) is selected at the section level via the `hero-banner-style`
- * section-metadata key. See hero-banner.js for the authoring model.
+ * Hero Banner block — a full-bleed promotional panel whose theme is selected at
+ * the section level via `hero-banner-style` (preset) and an optional
+ * `hero-banner-background` (color/gradient override). See hero-banner.js for the
+ * authoring model.
  *
- * Presets: `orange`, `blue`, `players`.
+ * The block holds up to two order-significant cells (content + optional image).
+ * Desktop layout follows the authored order; mobile always leads with content.
+ * Presets: `orange`, `blue`, `spotlight`.
  */
 
 :root {
@@ -18,7 +21,12 @@
   --hero-banner-blue-bg: radial-gradient(circle at 50% 50%, #1b386d 0%, #07193d 100%);
 }
 
-/* full-bleed: banners ignore the section's centered max-width */
+/* full-bleed: banners ignore the section's centered max-width and vertical
+   margins so the panel (and any section Background layer) runs edge to edge */
+main > .section:has(.hero-banner) {
+  margin: 0;
+}
+
 main > .section > .hero-banner-wrapper {
   max-width: none;
   padding: 0;
@@ -33,7 +41,7 @@ main > .section > .hero-banner-wrapper {
   color: #fff;
 }
 
-/* preset backgrounds (an authored override in cell 1 wins over these) */
+/* preset backgrounds (a `hero-banner-background` override wins over these) */
 .hero-banner.orange {
   background: var(--hero-banner-orange-bg);
 }
@@ -42,7 +50,7 @@ main > .section > .hero-banner-wrapper {
   background: var(--hero-banner-blue-bg);
 }
 
-/* the authored row is the flex container for content + inner image */
+/* the authored row is the flex container for the cells */
 .hero-banner > div {
   position: relative;
   flex: 1 1 auto;
@@ -57,34 +65,14 @@ main > .section > .hero-banner-wrapper {
   box-sizing: border-box;
 }
 
-/* Cell 1 — authored background image layer (sits above the preset gradient) */
-.hero-banner-background {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-}
-
-.hero-banner-background,
-.hero-banner-background picture {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-.hero-banner-background img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* content + inner image sit above any background layer */
-.hero-banner-content,
-.hero-banner-image {
-  position: relative;
-  z-index: 1;
+/* mobile: always lead with content; the image drops below it */
+.hero-banner.has-image .hero-banner-content {
+  order: -1;
 }
 
 .hero-banner-content {
+  position: relative;
+  z-index: 1;
   max-width: 640px;
   text-align: center;
 }
@@ -144,8 +132,10 @@ main > .section > .hero-banner-wrapper {
   line-height: 1.3;
 }
 
-/* Cell 3 — inner image */
+/* image cell */
 .hero-banner-image {
+  position: relative;
+  z-index: 1;
   width: 100%;
   max-width: 360px;
   text-align: center;
@@ -205,8 +195,10 @@ main > .section > .hero-banner-wrapper {
 }
 
 /*
- * `spotlight` preset — content-only, left-aligned, taller panel. The author
- * supplies the full-bleed background image via the background-override cell.
+ * `spotlight` preset — content-only, left-aligned, overlaid on the section's
+ * full-bleed background. The background is supplied via the native `Background`
+ * section metadata (an image asset is mounted as an optimized <picture> layer by
+ * scripts.js), so this preset carries no baked background and stays transparent.
  */
 .hero-banner.spotlight > div {
   align-items: flex-start;
@@ -215,6 +207,7 @@ main > .section > .hero-banner-wrapper {
 }
 
 .hero-banner.spotlight .hero-banner-content {
+  order: 0;
   text-align: left;
   max-width: 560px;
 }
@@ -224,7 +217,7 @@ main > .section > .hero-banner-wrapper {
 }
 
 /* tablet & mobile (<= 1024px): the inner image stacks below the content and
-   sits flush to the bottom edge of the panel */
+   sits flush to the bottom edge of the panel (split presets only) */
 @media (width <= 1024px) {
   .has-mobile-image .hero-banner-image-desktop {
     display: none;
@@ -234,7 +227,7 @@ main > .section > .hero-banner-wrapper {
     display: inline-block;
   }
 
-  .hero-banner.has-image .hero-banner-image img {
+  .hero-banner.has-image:not(.spotlight) .hero-banner-image img {
     display: block;
     width: auto;
     max-width: 100%;
@@ -243,23 +236,23 @@ main > .section > .hero-banner-wrapper {
     margin: 0 auto;
   }
 
-  .hero-banner.has-image > div {
+  .hero-banner.has-image:not(.spotlight) > div {
     padding-bottom: 0;
   }
 
-  .hero-banner.has-image .hero-banner-image {
+  .hero-banner.has-image:not(.spotlight) .hero-banner-image {
     margin-top: auto;
   }
 }
 
-/* desktop (> 1024px): panels with an inner image split 50/50, image left */
+/* desktop (> 1024px): content + image sit side by side in AUTHORED order */
 @media (width > 1024px) {
   .hero-banner > div {
     min-height: 400px;
     padding: 48px 64px;
   }
 
-  .hero-banner.has-image > div {
+  .hero-banner.has-image:not(.spotlight) > div {
     flex-direction: row;
     align-items: center;
     justify-content: center;
@@ -267,19 +260,20 @@ main > .section > .hero-banner-wrapper {
     padding: 40px 64px 0;
   }
 
-  .hero-banner.has-image .hero-banner-content {
+  /* source order governs left/right — clear the mobile content-first override */
+  .hero-banner.has-image:not(.spotlight) .hero-banner-content {
+    order: 0;
     flex: 1 1 0;
     max-width: none;
     text-align: left;
   }
 
-  .hero-banner.has-image .hero-banner-cta {
+  .hero-banner.has-image:not(.spotlight) .hero-banner-cta {
     justify-content: flex-start;
   }
 
-  .hero-banner.has-image .hero-banner-image {
+  .hero-banner.has-image:not(.spotlight) .hero-banner-image {
     flex: 1 1 0;
-    order: -1;
     max-width: none;
     align-self: stretch;
     display: flex;
@@ -287,7 +281,7 @@ main > .section > .hero-banner-wrapper {
     justify-content: center;
   }
 
-  .hero-banner.has-image .hero-banner-image img {
+  .hero-banner.has-image:not(.spotlight) .hero-banner-image img {
     width: auto;
     max-width: 100%;
     height: auto;
@@ -295,7 +289,7 @@ main > .section > .hero-banner-wrapper {
   }
 
   /* an art-directed pair is vertically centered instead of pinned to the base */
-  .hero-banner.has-image .hero-banner-image.has-mobile-image {
+  .hero-banner.has-image:not(.spotlight) .hero-banner-image.has-mobile-image {
     align-items: center;
   }
 

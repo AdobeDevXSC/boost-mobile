@@ -296,6 +296,12 @@ main > .section > .hero-wrapper {
     justify-content: center;
   }
 
+  /* image-left variant: inner image before the content column (the default,
+     provided for explicitness) */
+  .hero.has-image.image-left .hero-image {
+    order: -1;
+  }
+
   /* image-right variant: keep the inner image after the content column */
   .hero.has-image.image-right .hero-image {
     order: 1;

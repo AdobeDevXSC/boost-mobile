@@ -18,6 +18,9 @@
  *   `text-align-right`  — right-align the content; with no inner image the
  *                         content column is anchored to the right of the panel.
  *   `tall`              — taller panel (685px) for a full-bleed statement hero.
+ *   `image-left`        — inner image before the content column on desktop
+ *                         (this is the default; provided for explicitness).
+ *   `image-right`       — inner image after the content column on desktop.
  *
  * Two hero blocks placed in a section with the `Split Hero` style sit side by
  * side (see styles.css).

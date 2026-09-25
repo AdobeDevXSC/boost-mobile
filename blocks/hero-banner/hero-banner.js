@@ -16,6 +16,12 @@
  * The project's native `Background` / `Color` / `Heading Color` section-metadata
  * keys still apply if an author wants to override the panel background or colors.
  *
+ * Optional layout key:
+ *   | mobile-view-image-alignment | top | (or `bottom`)
+ * On mobile the image defaults to below the content (`bottom`); set this to
+ * `top` to show the image above the content instead (split presets only;
+ * ignored by spotlight).
+ *
  * Authoring model — one row with up to two ORDER-SIGNIFICANT cells, each holding
  * either content or an image. The cell containing a <picture> is the image; the
  * other is the content.
@@ -78,6 +84,17 @@ export default function decorate(block) {
   const preset = section?.dataset.heroBannerStyle;
   if (preset) {
     preset.split(/\s+/).filter(Boolean).forEach((token) => block.classList.add(token));
+  }
+
+  // Optional: on mobile place the image above or below the content.
+  // | Section Metadata            |            |
+  // | mobile-view-image-alignment | top/bottom |
+  // `bottom` is the default; `top` shows the image above the content.
+  const imageAlign = section?.dataset.mobileViewImageAlignment;
+  if (imageAlign === 'top') {
+    block.classList.add('mobile-image-top');
+  } else if (imageAlign === 'bottom') {
+    block.classList.add('mobile-image-bottom');
   }
 
   const row = block.firstElementChild;

@@ -54,7 +54,7 @@ main > .section > .hero-banner-wrapper {
    the gradient background stays full-bleed */
 .hero-banner.orange > div,
 .hero-banner.blue > div {
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
@@ -286,6 +286,42 @@ main > .section > .hero-banner-wrapper {
 
   .hero-banner.has-image:not(.spotlight) .hero-banner-image {
     margin-top: auto;
+  }
+
+  /* mobile-view-image-alignment: top — show the image above the content on
+     mobile (default is content-first, image below); mirror the flush bleed at
+     the top edge instead of the bottom */
+  .hero-banner.mobile-image-top.has-image:not(.spotlight) > div {
+    padding-top: 0;
+    padding-bottom: 48px;
+  }
+
+  .hero-banner.mobile-image-top.has-image:not(.spotlight) .hero-banner-content {
+    order: 0;
+    margin-top: 0;
+  }
+
+  .hero-banner.mobile-image-top.has-image:not(.spotlight) .hero-banner-image {
+    order: -1;
+    margin-top: 0;
+    margin-bottom: auto;
+  }
+
+  /* mobile-view-image-alignment: bottom — the default, stated explicitly so an
+     author can pin the image below the content on mobile */
+  .hero-banner.mobile-image-bottom.has-image:not(.spotlight) .hero-banner-content {
+    order: -1;
+  }
+
+  .hero-banner.mobile-image-bottom.has-image:not(.spotlight) > div {
+    padding-top: 48px;
+    padding-bottom: 0;
+  }
+
+  .hero-banner.mobile-image-bottom.has-image:not(.spotlight) .hero-banner-image {
+    order: 0;
+    margin-top: auto;
+    margin-bottom: 0;
   }
 }
 

@@ -375,8 +375,11 @@ main > .section > .hero-banner-wrapper {
     justify-content: center;
   }
 
-  .hero-banner.has-image:not(.spotlight) .hero-banner-image img,
-  .hero-banner:not(.spotlight) > div > div:has(picture) img {
+  /* scope to `picture img` so the Universal Editor's ProseMirror separator
+     <img> (inserted as a sibling of <picture>) doesn't inherit these rules
+     and shove the real image out of place */
+  .hero-banner.has-image:not(.spotlight) .hero-banner-image picture img,
+  .hero-banner:not(.spotlight) > div > div:has(picture) picture img {
     display: block;
     width: auto;
     max-width: 100%;

@@ -154,6 +154,13 @@ main > .section > .hero-banner-wrapper {
   height: auto;
 }
 
+/* the Universal Editor wraps <picture> in a ProseMirror <p>; zero its margin
+   so the picture sits flush against the panel's bottom edge (delivery has no
+   wrapping <p>, so this is a no-op there) */
+.hero-banner-image p {
+  margin: 0;
+}
+
 .hero-banner-image-mobile {
   display: none;
 }

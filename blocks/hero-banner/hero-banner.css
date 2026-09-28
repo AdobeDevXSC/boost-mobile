@@ -154,11 +154,18 @@ main > .section > .hero-banner-wrapper {
   height: auto;
 }
 
-/* the Universal Editor wraps <picture> in a ProseMirror <p>; zero its margin
-   so the picture sits flush against the panel's bottom edge (delivery has no
-   wrapping <p>, so this is a no-op there) */
+/* the Universal Editor wraps <picture> in a ProseMirror <p> and injects a
+   ~20px trailing <br> + separator <img> for cursor positioning. Zero the
+   paragraph margin and hide the cursor helpers inside the image cell so the
+   picture sits flush against the panel's bottom edge. Delivery has no
+   wrapping <p> or ProseMirror markers, so these rules are no-ops there. */
 .hero-banner-image p {
   margin: 0;
+}
+
+.hero-banner-image .ProseMirror-trailingBreak,
+.hero-banner-image img.ProseMirror-separator {
+  display: none;
 }
 
 .hero-banner-image-mobile {

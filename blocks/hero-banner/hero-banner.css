@@ -362,8 +362,11 @@ main > .section > .hero-banner-wrapper {
   }
 
   /* pin the image to the bottom edge of the panel — it sits flush at the base
-     rather than being vertically centered */
-  .hero-banner.has-image:not(.spotlight) .hero-banner-image {
+     rather than being vertically centered. The structural `:has(picture)`
+     selector mirrors this for the Universal Editor, where ProseMirror can
+     strip the JS-added `.hero-banner-image` class from the cell. */
+  .hero-banner.has-image:not(.spotlight) .hero-banner-image,
+  .hero-banner:not(.spotlight) > div > div:has(picture) {
     flex: 1 1 0;
     max-width: none;
     align-self: stretch;
@@ -372,7 +375,8 @@ main > .section > .hero-banner-wrapper {
     justify-content: center;
   }
 
-  .hero-banner.has-image:not(.spotlight) .hero-banner-image img {
+  .hero-banner.has-image:not(.spotlight) .hero-banner-image img,
+  .hero-banner:not(.spotlight) > div > div:has(picture) img {
     display: block;
     width: auto;
     max-width: 100%;

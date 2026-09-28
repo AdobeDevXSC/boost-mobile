@@ -337,7 +337,8 @@ main > .section > .hero-banner-wrapper {
     font-size: 50px;
   }
 
-  /* orange/blue: a fixed 400px panel, content and image vertically centered */
+  /* orange/blue: a fixed 400px panel, content vertically centered; the image
+     is pinned to the bottom edge (see .hero-banner-image below) */
   .hero-banner.has-image:not(.spotlight) > div {
     flex-direction: row;
     align-items: center;
@@ -360,20 +361,23 @@ main > .section > .hero-banner-wrapper {
     justify-content: flex-start;
   }
 
+  /* pin the image to the bottom edge of the panel — it sits flush at the base
+     rather than being vertically centered */
   .hero-banner.has-image:not(.spotlight) .hero-banner-image {
     flex: 1 1 0;
     max-width: none;
     align-self: stretch;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: center;
   }
 
   .hero-banner.has-image:not(.spotlight) .hero-banner-image img {
+    display: block;
     width: auto;
     max-width: 100%;
     height: auto;
-    max-height: 360px;
+    max-height: 400px;
   }
 
   /* spotlight: a taller 685px full-bleed panel */

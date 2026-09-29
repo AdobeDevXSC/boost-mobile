@@ -375,6 +375,16 @@ main > .section > .hero-banner-wrapper {
     justify-content: flex-start;
   }
 
+  /* desktop-view-image-alignment: pin the image left/right, overriding the
+     authored order */
+  .hero-banner.desktop-image-left:not(.spotlight) .hero-banner-image {
+    order: -1;
+  }
+
+  .hero-banner.desktop-image-right:not(.spotlight) .hero-banner-image {
+    order: 1;
+  }
+
   /* pin the image to the bottom edge of the panel — it sits flush at the base
      rather than being vertically centered. The structural `:has(picture)`
      selector mirrors this for the Universal Editor, where ProseMirror can

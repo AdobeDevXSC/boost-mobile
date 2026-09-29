@@ -22,9 +22,16 @@
  * `top` to show the image above the content instead (split presets only;
  * ignored by spotlight).
  *
+ * Optional layout key:
+ *   | desktop-view-image-alignment | left | (or `right`)
+ * Pins the image to one side on desktop regardless of authored order (split
+ * presets only).
+ *
  * Authoring model — one row with up to two ORDER-SIGNIFICANT cells, each holding
  * either content or an image. The cell containing a <picture> is the image; the
- * other is the content.
+ * other is the content. A single cell that holds BOTH copy and a picture is also
+ * fine: the picture is lifted into its own cell (before the copy if it was
+ * authored first, otherwise after), so it behaves exactly like the two-cell form.
  *   - Split presets (orange/blue): desktop layout follows the authored order —
  *     image in column 1 -> left, column 2 -> right. A single cell -> full-width.
  *   - `spotlight`: the image cell (whichever column) is used as the full-bleed
@@ -59,6 +66,39 @@ function decorateHeroBannerButtons(container) {
   container.querySelectorAll('a.button').forEach((a) => {
     a.closest('p')?.classList.add('hero-banner-cta');
   });
+}
+
+/**
+ * True for a direct child of a cell that is only an image (a bare <picture>, or a
+ * wrapper such as the <p> / <a> around one) with no text of its own.
+ * @param {Element} el
+ * @returns {boolean}
+ */
+function isPictureNode(el) {
+  return (el.tagName === 'PICTURE' || !!el.querySelector('picture')) && !el.textContent.trim();
+}
+
+/**
+ * Normalize a cell that holds BOTH copy and image(s) — e.g. the author put the
+ * headline, body, CTA and picture in one column. Left alone, the whole cell would
+ * be treated as the image cell and its copy would lay out beside the picture.
+ * Instead, lift the picture(s) into their own sibling cell so the row becomes the
+ * regular content + image pair. The image lands before the copy if the picture
+ * was authored first, otherwise after it.
+ * @param {Element} cell an authored cell
+ */
+function splitMixedCell(cell) {
+  const children = [...cell.children];
+  const pictureNodes = children.filter(isPictureNode);
+  const rest = children.filter((el) => !pictureNodes.includes(el));
+  if (!pictureNodes.length || !rest.some((el) => el.textContent.trim() || el.querySelector('a'))) {
+    return;
+  }
+
+  const imageCell = document.createElement('div');
+  imageCell.append(...pictureNodes);
+  if (children.indexOf(pictureNodes[0]) < children.indexOf(rest[0])) cell.before(imageCell);
+  else cell.after(imageCell);
 }
 
 /**
@@ -97,8 +137,21 @@ export default function decorate(block) {
     block.classList.add('mobile-image-bottom');
   }
 
+  // Optional: on desktop pin the image to the left or right, regardless of the
+  // authored order (split presets only).
+  // | Section Metadata             |            |
+  // | desktop-view-image-alignment | left/right |
+  const desktopAlign = section?.dataset.desktopViewImageAlignment;
+  if (desktopAlign === 'left' || desktopAlign === 'right') {
+    block.classList.add(`desktop-image-${desktopAlign}`);
+  }
+
   const row = block.firstElementChild;
   if (!row) return;
+
+  // A cell may mix copy and image(s); split those apart first so every cell is
+  // either content or image below.
+  [...row.children].forEach(splitMixedCell);
 
   // Classify each authored cell by content, preserving source order so the
   // layout (image left vs right) follows how the author placed the columns.

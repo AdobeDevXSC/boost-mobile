@@ -204,7 +204,7 @@ export function decorateMain(main) {
  * @param {Element} doc The container element
  */
 async function loadEager(doc) {
-  doc.documentElement.lang = 'en';
+  doc.documentElement.lang = window.location.pathname.match(/^\/es(\/|$)/) ? 'es' : 'en';
   decorateTemplateAndTheme();
   if (getMetadata('breadcrumbs').toLowerCase() === 'true') {
     doc.body.dataset.breadcrumbs = true;

@@ -2,15 +2,63 @@
 const isDesktop = window.matchMedia('(min-width: 900px)');
 
 /**
- * Fetch the nav fragment. Metadata-independent dual-fetch:
- * root first (the nav doc lives at /nav here and in production), then
- * /content as a fallback for alternate content layouts.
+ * Locale code → path prefix. Add rows here to introduce new languages
+ * (e.g. FR: '/fr'). The default locale (English) lives at the site root
+ * and so has an empty prefix.
+ */
+const LOCALES = {
+  EN: '',
+  ES: '/es',
+};
+
+/**
+ * Resolve which locale a given pathname is under by longest-prefix match.
+ * @param {string} pathname
+ * @returns {string} locale code (defaults to 'EN')
+ */
+function detectLocale(pathname) {
+  const match = Object.entries(LOCALES)
+    .filter(([, prefix]) => prefix)
+    .sort((a, b) => b[1].length - a[1].length)
+    .find(([, prefix]) => pathname === prefix || pathname.startsWith(`${prefix}/`));
+  return match ? match[0] : 'EN';
+}
+
+/**
+ * Build the equivalent URL on the current page in the target locale by
+ * swapping the current prefix for the target's. Preserves query and hash.
+ * @param {string} code target locale code
+ * @returns {string}
+ */
+function localizedHref(code) {
+  const prefix = LOCALES[code] ?? '';
+  const current = detectLocale(window.location.pathname);
+  const currentPrefix = LOCALES[current];
+  let rest = window.location.pathname;
+  if (currentPrefix && (rest === currentPrefix || rest.startsWith(`${currentPrefix}/`))) {
+    rest = rest.slice(currentPrefix.length) || '/';
+  }
+  return `${prefix}${rest}${window.location.search}${window.location.hash}`;
+}
+
+/**
+ * Fetch the nav fragment. Prefers a locale-scoped nav
+ * (e.g. /es/nav.plain.html) when the current page is under that locale, so
+ * localized nav labels are picked up automatically once authored. Falls back
+ * to the root nav, then /content/nav.plain.html.
  */
 async function fetchNavHtml() {
-  let resp = await fetch('/nav.plain.html');
-  if (!resp.ok) resp = await fetch('/content/nav.plain.html');
-  if (!resp.ok) return null;
-  return resp.text();
+  const prefix = LOCALES[detectLocale(window.location.pathname)];
+  const candidates = [
+    ...(prefix ? [`${prefix}/nav.plain.html`] : []),
+    '/nav.plain.html',
+    '/content/nav.plain.html',
+  ];
+  const resp = await candidates.reduce(
+    (chain, url) => chain.then((prev) => (prev && prev.ok ? prev : fetch(url))),
+    Promise.resolve(null),
+  );
+  return resp && resp.ok ? resp.text() : null;
 }
 
 /**
@@ -45,31 +93,38 @@ function toggleMenu(nav, navSections, forceExpanded = null) {
 
 /**
  * Build the language selector (a listbox-style dropdown) from the second
- * utility list. The first anchor is the current locale; the rest are options.
- * @param {Element} localeList the <ul> holding locale links
- * @returns {Element} the locale selector element
+ * utility list. Reads the locale codes from the authored list (e.g. EN, ES),
+ * which may be plain text or links, derives the current locale from the URL,
+ * and wires each option to the translated equivalent of the current page.
+ * @param {Element} localeList the <ul> holding locale entries
+ * @returns {Element|null} the locale selector, or null if nothing recognizable
  */
 function buildLocaleSelector(localeList) {
+  const codes = [...localeList.querySelectorAll('li')]
+    .map((li) => li.textContent.trim().toUpperCase())
+    .filter((code) => code && LOCALES[code] !== undefined);
+  if (!codes.length) return null;
+
+  const detected = detectLocale(window.location.pathname);
+  const current = codes.includes(detected) ? detected : codes[0];
+
   const wrapper = document.createElement('div');
   wrapper.className = 'nav-locale';
-
-  const links = [...localeList.querySelectorAll('a')];
-  const current = links[0];
 
   const trigger = document.createElement('button');
   trigger.type = 'button';
   trigger.className = 'nav-locale-trigger';
   trigger.setAttribute('aria-haspopup', 'listbox');
   trigger.setAttribute('aria-expanded', 'false');
-  trigger.innerHTML = `<span>${current ? current.textContent.trim() : 'EN'}</span>`;
+  trigger.innerHTML = `<span>${current}</span>`;
 
   const list = document.createElement('ul');
   list.className = 'nav-locale-list';
-  links.slice(1).forEach((a) => {
+  codes.filter((code) => code !== current).forEach((code) => {
     const li = document.createElement('li');
     const opt = document.createElement('a');
-    opt.href = a.href;
-    opt.textContent = a.textContent.trim();
+    opt.href = localizedHref(code);
+    opt.textContent = code;
     li.append(opt);
     list.append(li);
   });
@@ -148,7 +203,7 @@ export default async function decorate(block) {
     const lists = navUtility.querySelectorAll(':scope > ul');
     if (lists[1]) {
       const locale = buildLocaleSelector(lists[1]);
-      lists[1].replaceWith(locale);
+      if (locale) lists[1].replaceWith(locale);
     }
   }
 

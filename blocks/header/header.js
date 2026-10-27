@@ -1,28 +1,7 @@
+import { LOCALES, detectLocale } from '../../scripts/locales.js';
+
 // media query match that indicates desktop width
 const isDesktop = window.matchMedia('(min-width: 900px)');
-
-/**
- * Locale code → path prefix. Add rows here to introduce new languages
- * (e.g. FR: '/fr'). The default locale (English) lives at the site root
- * and so has an empty prefix.
- */
-const LOCALES = {
-  EN: '',
-  ES: '/es',
-};
-
-/**
- * Resolve which locale a given pathname is under by longest-prefix match.
- * @param {string} pathname
- * @returns {string} locale code (defaults to 'EN')
- */
-function detectLocale(pathname) {
-  const match = Object.entries(LOCALES)
-    .filter(([, prefix]) => prefix)
-    .sort((a, b) => b[1].length - a[1].length)
-    .find(([, prefix]) => pathname === prefix || pathname.startsWith(`${prefix}/`));
-  return match ? match[0] : 'EN';
-}
 
 /**
  * Build the equivalent URL on the current page in the target locale by

@@ -1,13 +1,20 @@
+import { LOCALES, detectLocale } from '../../scripts/locales.js';
+
 /**
- * Fetch the footer fragment. Metadata-independent dual-fetch:
- * root first (the footer doc lives at /footer here and in production), then
- * /content as a fallback for alternate content layouts.
+ * Prefer a locale-scoped footer, then the root footer, then /content.
  */
 async function fetchFooterHtml() {
-  let resp = await fetch('/footer.plain.html');
-  if (!resp.ok) resp = await fetch('/content/footer.plain.html');
-  if (!resp.ok) return null;
-  return resp.text();
+  const prefix = LOCALES[detectLocale(window.location.pathname)];
+  const candidates = [
+    ...(prefix ? [`${prefix}/footer.plain.html`] : []),
+    '/footer.plain.html',
+    '/content/footer.plain.html',
+  ];
+  const resp = await candidates.reduce(
+    (chain, url) => chain.then((prev) => (prev && prev.ok ? prev : fetch(url))),
+    Promise.resolve(null),
+  );
+  return resp && resp.ok ? resp.text() : null;
 }
 
 /**

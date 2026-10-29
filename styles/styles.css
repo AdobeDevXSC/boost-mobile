@@ -451,6 +451,10 @@ main > .section.combine-images > .default-content-wrapper img {
   }
 }
 
+main > .section[hidden] {
+  display: none;
+}
+
 /* header and footer should be hidden in block library pages */
 body.library header, body.library footer {
   display: none;

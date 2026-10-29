@@ -131,6 +131,16 @@ function decorateSections(main) {
       }
       sectionMeta.parentNode.remove();
     }
+    if (!section.classList.contains('shared') && !section.querySelector('.language-toggle')) {
+      const updateVisibility = (lang) => {
+        section.hidden = section.classList.contains('es') !== (lang === 'es');
+      };
+      const isSpanish = document.cookie.split(';').some((cookie) => cookie.trim() === 'lang=es');
+      updateVisibility(isSpanish ? 'es' : 'en');
+      document.addEventListener('languagechange', ({ detail: { lang } }) => {
+        updateVisibility(lang);
+      });
+    }
   });
 }
 
